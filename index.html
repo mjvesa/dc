@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <style>
+      #content {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body spellcheck="false">
+    <div id="content"></div>
+    <script type="module">
+      import { initLisb } from "./lisb.js";
+
+      initLisb(document.getElementById("content"), design => {});
+    </script>
+  </body>
+</html>
