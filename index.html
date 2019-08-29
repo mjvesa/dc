@@ -8,14 +8,75 @@
         height: 100vh;
         overflow: hidden;
       }
+      #sketch-canvas {
+        /*      position: relative; */
+        height: 5000px;
+        width: 100%;
+        font-size: 12px;
+        overflow: auto;
+      }
+      #preview-panel {
+        height: 100%;
+        width: 50%;
+        background-color: lightgray;
+      }
+      #sketch-canvas div {
+        border: solid 1px black;
+        position: absolute;
+        overflow: hidden;
+      }
+      #sketch-canvas div.drag-handle {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        z-index: 100;
+        border: none;
+        /*  background-color: white; */
+      }
+      #top-left-drag-handle {
+        cursor: nw-resize;
+      }
+
+      #top-right-drag-handle {
+        cursor: ne-resize;
+      }
+
+      #bottom-left-drag-handle {
+        cursor: sw-resize;
+      }
+
+      #bottom-right-drag-handle {
+        cursor: se-resize;
+      }
+
+      #element-select {
+        position: absolute;
+        z-index: 100000;
+      }
+
+      body {
+        user-select: none;
+      }
     </style>
   </head>
   <body spellcheck="false">
+    <div style="display: flex; height:100%">
+      <div style="height:100vh; width: 50vw;overflow:auto">
+        <div id="sketch-canvas">
+          <div id="top-left-drag-handle" class="drag-handle"></div>
+          <div id="top-right-drag-handle" class="drag-handle"></div>
+          <div id="bottom-left-drag-handle" class="drag-handle"></div>
+          <div id="bottom-right-drag-handle" class="drag-handle"></div>
+        </div>
+      </div>
+      <div id="preview-panel"></div>
+    </div>
+    `;
+
     <div id="content"></div>
     <script type="module">
-      import { initLisb } from "./lisb.js";
-
-      initLisb(document.getElementById("content"), design => {});
+      import { initEditorCore } from "./editor-core.js";
+      initEditorCore();
     </script>
   </body>
 </html>

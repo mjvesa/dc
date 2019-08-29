@@ -109,12 +109,10 @@ const createAndAppendChildElementsToDOM = (parent, rects) => {
     if (rect.props) {
       Object.keys(rect.props).forEach(key => {
         if (key in el) {
-          console.log("settting prop " + key + " to " + rect.props[key]);
           el[key] = rect.props[key];
           el.setAttribute(key, rect.props[key]);
         } else {
           el.setAttribute(key, rect.props[key]);
-          console.log("setting attribute " + key + " to " + rect.props[key]);
         }
       });
     }
@@ -142,7 +140,7 @@ const createAndAppendChildElementsToDOM = (parent, rects) => {
   });
 };
 
-export const initLisb = (targetEl, designCallback) => {
+export const initEditorCore = () => {
   let rects = [];
   let draggedEl;
   let draggedRect = {};
@@ -155,12 +153,13 @@ export const initLisb = (targetEl, designCallback) => {
     const span = document.createElement("span");
     span.setAttribute("id", "element-select");
     const editorSelect = document.createElement("select");
+    editorSelect.setAttribute("id", "editor-select");
     editorSelect.oninput = event => {
       installBExpEditor(event.target.value);
     };
 
     const el = document.createElement("select");
-    el.setAttribute("id", "element-selector");
+    el.setAttribute("id", "tag-select");
     tags.forEach(tag => {
       const tagEl = document.createElement("option");
       tagEl.textContent = tag;
@@ -168,18 +167,29 @@ export const initLisb = (targetEl, designCallback) => {
     });
     el.oninput = event => {
       const tag = el.value;
+      // Make select be as wide as needed to show tag name
+      el.style.width = 2 + el.value.length / 2.5 + "rem";
       focusedElement.rect.tag = tag;
       editors = {};
       editorSelect.innerHTML = "";
+      let installedEditor = false;
       designComponentEditors.forEach(editor => {
         if (editor[0] === "*" || editor[0] === tag) {
-          editors[editor[1].name] = editor[1].fn;
+          const editorName = editor[1].name;
+          editors[editorName] = editor[1].fn;
           const option = document.createElement("option");
-          option.textContent = editor[1].name;
+          option.textContent = editorName;
           editorSelect.appendChild(option);
+          if (editorName == tag + "-editor") {
+            installBExpEditor(editorName);
+            editorSelect.value = editorName;
+            installedEditor = true;
+          }
         }
       });
-      installBExpEditor("default-editor");
+      if (!installedEditor) {
+        installBExpEditor("default-editor");
+      }
     };
     span.appendChild(el);
     span.appendChild(editorSelect);
@@ -188,84 +198,19 @@ export const initLisb = (targetEl, designCallback) => {
 
   let elementSelect = createElementSelect();
 
-  targetEl.innerHTML = `
-  <style>
-    #sketch-canvas {
-/*      position: relative; */
-        height: 5000px;
-        width: 100%;
-        font-size: 12px;
-        overflow: auto;
-    }
-    #preview-panel {
-       height: 100%;
-       width: 50%;
-       background-color: lightgray;
-    }
-    #sketch-canvas div {
-        border: solid 1px black;
-        position: absolute;
-      }
-    #scheme-code {
-      width: 100%;
-      heigth: 8rem;
-    } 
-    #sketch-canvas div.drag-handle {
-      width: 20px;
-      height: 20px;
-      position: absolute;
-      z-index: 100;
-      border: none;
-      /*  background-color: white; */
-    }
-    #top-left-drag-handle {
-      cursor: nw-resize;
-    }
-
-    #top-right-drag-handle {
-      cursor: ne-resize;
-    }
-
-    #bottom-left-drag-handle {
-      cursor: sw-resize;
-    }
-
-    #bottom-right-drag-handle {
-      cursor: se-resize;
-    }
-
-    #element-select {
-      position: absolute;
-      z-index: 100000;
-    }
-
-  </style>
-  <div style="display: flex; height:100%">
-   <div style="height:100vh; width: 50vw;overflow:auto">
-      <div id="sketch-canvas">
-        <div id="top-left-drag-handle" class="drag-handle"></div>
-        <div id="top-right-drag-handle" class="drag-handle"></div>
-        <div id="bottom-left-drag-handle" class="drag-handle"></div>
-        <div id="bottom-right-drag-handle" class="drag-handle"></div>
-      </div>
-    </div>
-    <div id="preview-panel">
-    </div>
-  </div>`;
-
-  targetEl.appendChild(elementSelect);
+  document.body.appendChild(elementSelect);
 
   const canvas = $("#sketch-canvas");
 
   const installBExpEditor = editorName => {
-    const DCAPI = { rects: rects, repaint: evaluateBexp };
+    const DCAPI = { rects: rects, repaint: compileModelToHTML };
     if (focusedElement) {
       focusedElement.rect.el.innerHTML = "";
       editors[editorName](focusedElement.rect, DCAPI);
     }
-    evaluateBexp();
+    compileModelToHTML();
   };
-  const handleKeyUp = event => {
+  document.body.onkeyup = event => {
     if (event.key === "Delete" && event.ctrlKey) {
       if (focusedElement) {
         let newRects = [];
@@ -307,8 +252,8 @@ export const initLisb = (targetEl, designCallback) => {
     } else {
       isTranslating = false;
       draggedEl = document.createElement("div");
-      draggedEl.onkeyup = handleKeyUp;
-      draggedRect = { el: draggedEl, tag: "", props: {}, style: {} };
+      //      draggedEl.onkeyup = handleKeyUp;
+      draggedRect = { el: draggedEl, tag: "div", props: {}, style: {} };
       draggedEl.rect = draggedRect;
       //draggedEl.contentEditable = true;
       draggedEl.style.zIndex = 1000;
@@ -426,11 +371,10 @@ export const initLisb = (targetEl, designCallback) => {
     const rect = targetEl.rect;
     if (rect) {
       mouseOverEvent.target.focus();
-      console.log(mouseOverEvent.target);
       focusedElement = mouseOverEvent.target;
       elementSelect.style.left = event.target.rect.left + "px";
       elementSelect.style.top = event.target.rect.top - 16 + "px";
-      document.getElementById("element-selector").value = rect.tag;
+      document.getElementById("tag-select").value = rect.tag;
       repositionDragHandles(rect);
 
       topLeftHandle.onmousedown = mouseDownEvent => {
@@ -530,10 +474,10 @@ export const initLisb = (targetEl, designCallback) => {
     deleteRectChildren(rects);
     const roots = createTreeFromRects(rects);
     fixZIndexes(roots);
-    evaluateBexp();
+    compileModelToHTML();
   };
 
-  const evaluateBexp = () => {
+  const compileModelToHTML = () => {
     deleteRectChildren(rects);
     let roots = createTreeFromRects(rects);
     roots.sort((rectA, rectB) => {

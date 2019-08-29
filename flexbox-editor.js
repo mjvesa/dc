@@ -1,4 +1,8 @@
-import { createPropertyEditor, createPropertySelect } from "./dc-editor-fields";
+import {
+  createPropertyEditor,
+  createPropertySelect,
+  fieldsFromProperties
+} from "./dc-editor-fields";
 
 const fn = (rect, DCAPI) => {
   const flexboxProps = [
@@ -54,47 +58,11 @@ const fn = (rect, DCAPI) => {
   el.textContent = "";
   const table = document.createElement("table");
   rect.style.display = "flex";
-
-  flexboxProps.forEach(prop => {
-    switch (prop[1]) {
-      case "number": {
-        const editor = createPropertyEditor(prop[0], event => {
-          rect.style[prop[0]] = event.target.value;
-          DCAPI.repaint();
-        });
-        table.appendChild(editor);
-        break;
-      }
-      case "finite": {
-        const editor = createPropertySelect(prop[0], prop[2], event => {
-          rect.style[prop[0]] = event.target.value;
-          DCAPI.repaint();
-        });
-        table.appendChild(editor);
-        break;
-      }
-      case "size": {
-        const editor = createPropertyEditor(prop[0], event => {
-          rect.style[prop[0]] = event.target.value;
-          DCAPI.repaint();
-        });
-        table.appendChild(editor);
-        break;
-      }
-    }
-  });
-
-  table.appendChild(
-    createPropertyEditor("ID", event => {
-      rect.props.id = event.target.value;
-      DCAPI.repaint();
-      event.stopPropagation();
-    })
-  );
+  fieldsFromProperties(flexboxProps, table, rect, DCAPI);
   el.appendChild(table);
 };
 
 export const flexboxEditor = {
-  name: "flexbox-editor",
+  name: "Flexbox",
   fn: fn
 };

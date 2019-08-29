@@ -37,3 +37,42 @@ export const createPropertySelect = (caption, options, listener) => {
   tr.appendChild(inputTd);
   return tr;
 };
+
+export const fieldsFromProperties = (properties, table, rect, DCAPI) => {
+  properties.forEach(prop => {
+    switch (prop[1]) {
+      case "number": {
+        const editor = createPropertyEditor(prop[0], event => {
+          rect.style[prop[0]] = event.target.value;
+          DCAPI.repaint();
+        });
+        table.appendChild(editor);
+        break;
+      }
+      case "finite": {
+        const editor = createPropertySelect(prop[0], prop[2], event => {
+          rect.style[prop[0]] = event.target.value;
+          DCAPI.repaint();
+        });
+        table.appendChild(editor);
+        break;
+      }
+      case "size": {
+        const editor = createPropertyEditor(prop[0], event => {
+          rect.style[prop[0]] = event.target.value;
+          DCAPI.repaint();
+        });
+        table.appendChild(editor);
+        break;
+      }
+      case "color": {
+        const editor = createPropertyEditor(prop[0], event => {
+          rect.style[prop[0]] = event.target.value;
+          DCAPI.repaint();
+        });
+        table.appendChild(editor);
+        break;
+      }
+    }
+  });
+};
