@@ -1,4 +1,4 @@
-import { fieldsFromProperties } from "./dc-editor-fields";
+import { fieldsFromProperties } from "../dc-editor-fields";
 
 const fn = (rect, DCAPI) => {
   const gridProps = [["display", "finite", ["grid", "grid-inline"]]];
@@ -12,6 +12,7 @@ const fn = (rect, DCAPI) => {
 };
 
 export const flexboxEditor = {
-  name: "Grid container",
+  name: "grid-editor",
+  displayname: "Grid container editor",
   fn: fn
 };

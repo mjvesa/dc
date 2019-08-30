@@ -1,4 +1,4 @@
-import { fieldsFromProperties } from "./dc-editor-fields";
+import { fieldsFromProperties } from "../dc-editor-fields";
 
 const fn = (rect, DCAPI) => {
   // Create a textfield and load JSON from it when a specified element is clicked.
@@ -19,6 +19,7 @@ const fn = (rect, DCAPI) => {
 };
 
 export const sizesEditor = {
-  name: "Sizes",
+  name: "sizes-editor",
+  displayname: "Sizes editor",
   fn: fn
 };

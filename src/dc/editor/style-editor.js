@@ -16,5 +16,6 @@ const fn = (rect, DCAPI) => {
 
 export const styleEditor = {
   name: "style-editor",
+  displayname: "Style editor",
   fn: fn
 };

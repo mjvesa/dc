@@ -1,25 +1,3 @@
-import "@polymer/iron-icon";
-import "@vaadin/vaadin-button";
-import "@vaadin/vaadin-checkbox";
-import "@vaadin/vaadin-checkbox/theme/lumo/vaadin-checkbox-group.js";
-import "@vaadin/vaadin-radio-button";
-import "@vaadin/vaadin-radio-button/theme/lumo/vaadin-radio-group.js";
-import "@vaadin/vaadin-select";
-import "@vaadin/vaadin-item";
-import "@vaadin/vaadin-icons";
-import "@vaadin/vaadin-combo-box";
-import "@vaadin/vaadin-date-picker";
-import "@vaadin/vaadin-time-picker";
-import "@vaadin/vaadin-grid";
-import "@vaadin/vaadin-text-field";
-import "@vaadin/vaadin-text-field/theme/lumo/vaadin-email-field.js";
-import "@vaadin/vaadin-text-field/theme/lumo/vaadin-number-field.js";
-import "@vaadin/vaadin-text-field/theme/lumo/vaadin-password-field.js";
-import "@vaadin/vaadin-ordered-layout/theme/lumo/vaadin-horizontal-layout.js";
-import "@vaadin/vaadin-ordered-layout/theme/lumo/vaadin-vertical-layout.js";
-import "@vaadin/vaadin-split-layout/theme/lumo/vaadin-split-layout.js";
-import "@vaadin/vaadin-tabs/theme/lumo/vaadin-tabs.js";
-import "@vaadin/vaadin-tabs/theme/lumo/vaadin-tab.js";
 import { tags } from "./tags";
 import { designComponentEditors } from "./design-component-editors";
 
@@ -108,12 +86,13 @@ const createAndAppendChildElementsToDOM = (parent, rects) => {
 
     if (rect.props) {
       Object.keys(rect.props).forEach(key => {
-        if (key in el) {
-          el[key] = rect.props[key];
-          el.setAttribute(key, rect.props[key]);
-        } else {
-          el.setAttribute(key, rect.props[key]);
-        }
+        el[key] = rect.props[key];
+      });
+    }
+
+    if (rect.attributes) {
+      Object.keys(rect.attributes).forEach(key => {
+        el.setAttribute(key, rect.props[key]);
       });
     }
 
@@ -252,18 +231,15 @@ export const initEditorCore = () => {
     } else {
       isTranslating = false;
       draggedEl = document.createElement("div");
-      //      draggedEl.onkeyup = handleKeyUp;
-      draggedRect = { el: draggedEl, tag: "div", props: {}, style: {} };
-      draggedEl.rect = draggedRect;
-      //draggedEl.contentEditable = true;
-      draggedEl.style.zIndex = 1000;
-      /*
-      draggedEl.oninput = event => {
-        event.target.rect.text = event.target.textContent;
-
-        evaluateBexp();
+      draggedRect = {
+        el: draggedEl,
+        tag: "div",
+        props: {},
+        attributes: {},
+        style: {}
       };
-*/
+      draggedEl.rect = draggedRect;
+      draggedEl.style.zIndex = 1000;
       draggedEl.onmouseover = event => {
         event.target.focus();
         focusedElement = event.target;
@@ -483,7 +459,8 @@ export const initEditorCore = () => {
     roots.sort((rectA, rectB) => {
       return rectA.top - rectB.top;
     });
-    const target = document.getElementById("preview-panel");
+    const target = document.getElementById("preview-panel").contentDocument
+      .body;
     target.innerHTML = "";
     createAndAppendChildElementsToDOM(target, roots);
   };

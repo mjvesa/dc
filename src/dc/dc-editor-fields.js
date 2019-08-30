@@ -1,4 +1,4 @@
-export const createPropertyEditor = (caption, listener) => {
+export const createPropertyEditor = (caption, listener, length) => {
   const tr = document.createElement("tr");
   const captionTd = document.createElement("td");
   captionTd.textContent = caption;
@@ -8,7 +8,7 @@ export const createPropertyEditor = (caption, listener) => {
   input.onmousedown = event => {
     event.stopPropagation();
   };
-  input.style.width = "4rem";
+  input.style.width = length ? length : "4rem";
   input.type = "text";
   input.oninput = listener;
   inputTd.appendChild(input);

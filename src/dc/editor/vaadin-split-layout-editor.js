@@ -1,4 +1,4 @@
-import { createPropertySelect } from "./dc-editor-fields";
+import { createPropertySelect } from "../dc-editor-fields";
 
 const fn = (rect, DCAPI) => {
   const el = rect.el;
@@ -10,14 +10,15 @@ const fn = (rect, DCAPI) => {
         rect.props = {};
       }
       rect.props.orientation = event.target.value;
-      DCAPI.evaluateBexp();
+      DCAPI.repaint();
       event.stopPropagation();
     })
   );
   el.appendChild(table);
 };
 
-export const vaadinTabsEditor = {
-  name: "vaadin-tabs-editor",
+export const vaadinSplitLayoutEditor = {
+  name: "vaadin-split-layout-editor",
+  displayname: "Vaadin Split Layout editor",
   fn: fn
 };

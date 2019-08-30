@@ -4,7 +4,10 @@
 //  values are stored anywhere in the variable at the moment, the are just propagated.
 //
 
-import { createPropertyEditor, createPropertySelect } from "./dc-editor-fields";
+import {
+  createPropertyEditor,
+  createPropertySelect
+} from "../dc-editor-fields";
 
 const fn = (rect, DCAPI) => {
   const stateVariables = [];
@@ -63,6 +66,7 @@ const fn = (rect, DCAPI) => {
         const createVariable = (init) => {
             const listeners = [];
             let currentValue = init;
+            const listener = {};
             
             const fireListeners = () => {
                 listeners.forEach(listener => {
@@ -70,21 +74,15 @@ const fn = (rect, DCAPI) => {
                 });
             }
 
-            return (fn, value) => {
-                if (fn === 'addListener') {
-                    listeners.push(value);
-                }
-                
-                if (fn === 'setValue') {
-                    currentValue=value;
-                    fireListeners();
-                }
-
-                if (fn === 'appendValue') {
-                    currentValue.push(value);
-                    fireListeners();
-                }
+            listener.addListener = value => {
+              listeners.push(value);
             }
+
+            listener.setValue = value => {
+              currentValue=value;
+              fireListeners();
+           }
+          return listener;  
         }
         window.variableListeners = {};
         ${generateVariableCreation()}
@@ -112,6 +110,7 @@ const fn = (rect, DCAPI) => {
 };
 
 export const stateAction = {
-  name: "State action",
+  name: "state-action",
+  displayname: "State action",
   fn: fn
 };

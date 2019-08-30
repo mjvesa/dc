@@ -1,4 +1,7 @@
-import { createPropertyEditor, createPropertySelect } from "./dc-editor-fields";
+import {
+  createPropertyEditor,
+  createPropertySelect
+} from "../dc-editor-fields";
 
 const fn = (rect, DCAPI) => {
   const el = rect.el;
@@ -6,14 +9,14 @@ const fn = (rect, DCAPI) => {
   const table = document.createElement("table");
   table.appendChild(
     createPropertyEditor("Header", event => {
-      rect.props.header = event.target.value;
+      rect.attributes.header = event.target.value;
       DCAPI.repaint();
       event.stopPropagation();
     })
   );
   table.appendChild(
     createPropertyEditor("Path", event => {
-      rect.props.path = event.target.value;
+      rect.attributes.path = event.target.value;
       DCAPI.repaint();
       event.stopPropagation();
     })
@@ -24,5 +27,6 @@ const fn = (rect, DCAPI) => {
 
 export const vaadinGridColumnEditor = {
   name: "vaadin-grid-column-editor",
+  displayname: "Vaadin Grid column editor",
   fn: fn
 };

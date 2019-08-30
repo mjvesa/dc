@@ -1,6 +1,9 @@
 // An action that loads data from a REST endpoint. It is assumed that a simple array is returned
 // That is placed into specific items
-import { createPropertyEditor, createPropertySelect } from "./dc-editor-fields";
+import {
+  createPropertyEditor,
+  createPropertySelect
+} from "../dc-editor-fields";
 
 const fn = (rect, DCAPI) => {
   // Create a textfield and load JSON from it when a specified element is clicked.
@@ -15,7 +18,7 @@ const fn = (rect, DCAPI) => {
         return response.json();
       })
       .then(function(data) {
-        window.variableListeners['${varName}']('setValue', data);
+        window.variableListeners['${varName}'].setValue(data);
       });
     }})();`;
   };
@@ -28,17 +31,21 @@ const fn = (rect, DCAPI) => {
   const el = rect.el;
   el.textContent = "";
   const table = document.createElement("table");
-  const property = (caption, id) => {
+  const property = (caption, id, length) => {
     table.appendChild(
-      createPropertyEditor(caption, event => {
-        props[id] = event.target.value;
-        updateScript();
-      })
+      createPropertyEditor(
+        caption,
+        event => {
+          props[id] = event.target.value;
+          updateScript();
+        },
+        length
+      )
     );
   };
   property("Click source Id", "clickSourceId");
   property("Variable", "varName");
-  property("REST URL", "restUrl");
+  property("REST URL", "restUrl", "10rem");
 
   el.appendChild(table);
 };

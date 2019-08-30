@@ -1,4 +1,7 @@
-import { createPropertyEditor, createPropertySelect } from "./dc-editor-fields";
+import {
+  createPropertyEditor,
+  createPropertySelect
+} from "../dc-editor-fields";
 
 const fn = (rect, DCAPI) => {
   let clickId, tableId;
@@ -112,5 +115,6 @@ const fn = (rect, DCAPI) => {
 };
 export const gridNewItemEditor = {
   name: "grid-new-item-editor",
+  displayname: "Grid new item",
   fn: fn
 };

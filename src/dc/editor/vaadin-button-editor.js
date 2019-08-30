@@ -1,4 +1,7 @@
-import { createPropertyEditor, createPropertySelect } from "./dc-editor-fields";
+import {
+  createPropertyEditor,
+  createPropertySelect
+} from "../dc-editor-fields";
 
 const fn = (rect, DCAPI) => {
   const el = rect.el;
@@ -14,7 +17,7 @@ const fn = (rect, DCAPI) => {
   );
   table.appendChild(
     createPropertyEditor("ID", event => {
-      rect.props.id = event.target.value;
+      rect.attributes.id = event.target.value;
       DCAPI.repaint();
       event.stopPropagation();
     })
@@ -24,7 +27,7 @@ const fn = (rect, DCAPI) => {
       "Theme",
       ["", "primary", "secondarÿ́", "tertiary"],
       event => {
-        rect.props.theme = event.target.value;
+        rect.attributes.theme = event.target.value;
         DCAPI.repaint();
       }
     )
@@ -692,5 +695,6 @@ const fn = (rect, DCAPI) => {
 
 export const vaadinButtonEditor = {
   name: "vaadin-button-editor",
+  displayname: "Vaadin Button editor",
   fn: fn
 };

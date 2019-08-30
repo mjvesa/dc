@@ -16,7 +16,7 @@
         overflow: auto;
       }
       #preview-panel {
-        height: 100%;
+        height: 100vh;
         width: 50%;
         background-color: lightgray;
       }
@@ -69,13 +69,10 @@
           <div id="bottom-right-drag-handle" class="drag-handle"></div>
         </div>
       </div>
-      <div id="preview-panel"></div>
+      <iframe id="preview-panel" src="iframe.html"></iframe>
     </div>
-    `;
-
-    <div id="content"></div>
     <script type="module">
-      import { initEditorCore } from "./editor-core.js";
+      import { initEditorCore } from "./src/editor-core.js";
       initEditorCore();
     </script>
   </body>

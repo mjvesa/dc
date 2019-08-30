@@ -2,7 +2,7 @@ import {
   createPropertyEditor,
   createPropertySelect,
   fieldsFromProperties
-} from "./dc-editor-fields";
+} from "../dc-editor-fields";
 
 const fn = (rect, DCAPI) => {
   const flexboxProps = [
@@ -63,6 +63,7 @@ const fn = (rect, DCAPI) => {
 };
 
 export const flexboxEditor = {
-  name: "Flexbox",
+  name: "flexbox-editor",
+  displayname: "Flexbox editor",
   fn: fn
 };
