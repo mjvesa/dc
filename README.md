@@ -1,7 +1,7 @@
 # Designer Components
 
 DC is an experimental designer where the architecture is split in two:
-Core Editor takes care of manipulating rectangles that are
+Editor Core takes care of manipulating rectangles that are
 used to draw trees by nesting them and placing them in various
 arrangements. Designer Components handle the contents of those
 rectangles.
