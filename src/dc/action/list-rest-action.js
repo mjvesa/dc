@@ -8,7 +8,7 @@ const fn = (rect, DCAPI) => {
   const props = {
     sourceVarName: "",
     targetVarName: "",
-    itemMaxLimit: "",
+    itemMaxCount: "",
     restUrl: "",
     parameterName: ""
   };
@@ -16,14 +16,16 @@ const fn = (rect, DCAPI) => {
   const generateRestCall = ({
     sourceVarName,
     targetVarName,
+    itemMaxCount,
     restUrl,
     parameterName
   }) => {
     rect.props.textContent = `(function () {
       window.variableListeners['${sourceVarName}'].addListener(value => {
         const results = [];
+        const items = value.slice(0, ${itemMaxCount});
         debugger;
-        Promise.all(value.slice(${itemMaxLimit}).map(item =>  {
+        Promise.all(items.map(item =>  {
           return fetch('${restUrl}'.replace("{${parameterName}}", item))
           .then(function(response) {
             return response.json();
@@ -61,7 +63,7 @@ const fn = (rect, DCAPI) => {
   };
   property("Source Variable", "sourceVarName");
   property("Target Variable", "targetVarName");
-  property("Item max limit", "itemMaxLimit");
+  property("Item max count", "itemMaxCount");
   property("REST URL", "restUrl", "10rem");
   property("Parameter name", "parameterName");
 

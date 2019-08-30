@@ -92,7 +92,7 @@ const createAndAppendChildElementsToDOM = (parent, rects) => {
 
     if (rect.attributes) {
       Object.keys(rect.attributes).forEach(key => {
-        el.setAttribute(key, rect.props[key]);
+        el.setAttribute(key, rect.attributes[key]);
       });
     }
 
@@ -157,7 +157,8 @@ export const initEditorCore = () => {
           const editorName = editor[1].name;
           editors[editorName] = editor[1].fn;
           const option = document.createElement("option");
-          option.textContent = editorName;
+          option.textContent = editor[1].displayname;
+          option.value = editorName;
           editorSelect.appendChild(option);
           if (editorName == tag + "-editor") {
             installBExpEditor(editorName);
