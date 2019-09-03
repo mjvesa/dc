@@ -111,6 +111,6 @@ const fn = (rect, DCAPI) => {
 
 export const stateAction = {
   name: "state-action",
-  displayname: "State action",
+  displayname: "State",
   fn: fn
 };

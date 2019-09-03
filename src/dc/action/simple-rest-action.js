@@ -2,7 +2,9 @@
 // That is placed into specific items
 import {
   createPropertyEditor,
-  createPropertySelect
+  createPropertySelect,
+  createIdSelect,
+  findAllIds
 } from "../dc-editor-fields";
 
 const fn = (rect, DCAPI) => {
@@ -31,6 +33,7 @@ const fn = (rect, DCAPI) => {
   const el = rect.el;
   el.textContent = "";
   const table = document.createElement("table");
+
   const property = (caption, id, length) => {
     table.appendChild(
       createPropertyEditor(
@@ -43,7 +46,12 @@ const fn = (rect, DCAPI) => {
       )
     );
   };
-  property("Click source Id", "clickSourceId");
+
+  table.appendChild(
+    createIdSelect("Click source Id", event => {
+      props["clickSourceId"] = event.target.value;
+    })
+  );
   property("Variable", "varName");
   property("REST URL", "restUrl", "10rem");
 

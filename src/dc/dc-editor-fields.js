@@ -76,3 +76,30 @@ export const fieldsFromProperties = (properties, table, rect, DCAPI) => {
     }
   });
 };
+
+export const findAllIds = rects => {
+  const ids = [];
+  rects.forEach(rect => {
+    if (rect.attributes.id) {
+      ids.push(rect.attributes.id);
+    }
+  });
+  return ids;
+};
+export const findAllIdsForTag = (rects, tag) => {
+  const ids = [];
+  rects.forEach(rect => {
+    if (rect.attributes.id && rect.tag === tag) {
+      ids.push(rect.attributes.id);
+    }
+  });
+  return ids;
+};
+
+export const createIdSelect = (caption, DCAPI, listener) => {
+  return createPropertySelect(caption, findAllIds(DCAPI.rects), listener);
+};
+
+export const createIdSelectForTag = (caption, tag, DCAPI, listener) => {
+  return createPropertySelect(caption, findAllIds(DCAPI.rects), listener);
+};

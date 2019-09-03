@@ -2,6 +2,7 @@
 // grid with the variable values. Currently just flat arrays are supported
 import {
   createPropertyEditor,
+  createIdSelectForTag,
   createPropertySelect
 } from "../dc-editor-fields";
 
@@ -33,7 +34,12 @@ const fn = (rect, DCAPI) => {
       })
     );
   };
-  property("Grid id ", "gridId");
+  //property("Grid id ", "gridId");
+  table.appendChild(
+    createIdSelectForTag("Grid id", "vaadin-grid", DCAPI, event => {
+      props["gridId"] = event.target.value;
+    })
+  );
   property("Variable name", "varName");
 
   el.appendChild(table);
