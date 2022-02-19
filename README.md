@@ -8,8 +8,3 @@ used to draw trees by nesting them and placing them in various
 arrangements. Designer Components handle the contents of those
 rectangles.
 
-Anyone is welcomed to take part in improving the Core Editor and to submit
-new Designer Components.
-
-Read the documentation about the DC API and look at the existing Components
-for guidance.
